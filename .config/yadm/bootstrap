@@ -3,23 +3,9 @@
 
 install_brew() {
   # install Homebrew if it's missing
-  if ! command -v brew >/dev/null 2>&1; then
-    echo "Installing yadm by homebrew"
-    brew install yadm
-  else
-    echo "brew 命令不存在"
-    if grep -q '^linuxbrew:' /etc/passwd; then
-      echo "存在 linuxbrew 用户, brew 安装 yadm"
-      sudo -u linuxbrew brew install yadm
-    else
-      echo "不存在 linuxbrew 用户, 请创建后重试，或者自行安装yadm"
-    fi
+  if ! command -v brew > /dev/null 2>&1; then
+    echo "brew 命令不存在，请使用linuxbrew用户安装homebrew"
   fi
-
-  # if [ -f "$HOME/.Brewfile" ]; then
-  #   echo "Updating Homebrew bundle"
-  #   brew bundle --global
-  # fi
 }
 
 configure_zsh() {
@@ -38,10 +24,6 @@ configure_vim() {
   nvim +'PlugInstall --sync' +qa
 }
 
-configure_tmux() {
-  ~/.tmux/plugins/tpm/bin/install_plugins
-}
-
 system_type=$(uname -s)
 
 echo $system_type
@@ -50,4 +32,3 @@ install_brew
 
 # configure_zsh
 # configure_vim
-# configure_tmux
