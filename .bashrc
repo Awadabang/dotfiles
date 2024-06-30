@@ -109,6 +109,7 @@ fi
 
 # homebrew setting
 eval "$(/home/linuxbrew/.linuxbrew/bin/brew shellenv)"
+alias brew='sudo -Hiu linuxbrew brew'
 
 # kubernetes setting
 alias k='kubectl'
