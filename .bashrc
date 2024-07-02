@@ -113,7 +113,8 @@ alias brew='sudo -Hiu linuxbrew brew'
 
 # kubernetes setting
 alias k='kubectl'
-export KUBECONFIG='~/.kube/config'
+KUBECONFIG="$HOME/.kube/config"
+export KUBECONFIG
 
 # goup setting
 . ~/.go/env
