@@ -107,10 +107,6 @@ if ! shopt -oq posix; then
   fi
 fi
 
-# homebrew setting
-eval "$(/home/linuxbrew/.linuxbrew/bin/brew shellenv)"
-alias brew='sudo -Hiu linuxbrew brew'
-
 # kubernetes setting
 alias k='kubectl'
 KUBECONFIG="$HOME/.kube/config"
@@ -118,3 +114,6 @@ export KUBECONFIG
 
 # goup setting
 . ~/.go/env
+
+# mise
+eval "$(~/.local/bin/mise activate bash)"

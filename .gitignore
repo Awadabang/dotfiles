@@ -1,0 +1,11 @@
+# https://github.com/purarue/dotfiles/blob/master/.gitignore
+/.ssh
+/.local/share/yadm
+/.local/bin
+/.cache
+
+# .lesshst is created by less command, to storage history of less command.
+/.lesshst
+
+# .viminfo is used to store command line history; search string history; input-line history...
+/.viminfo
