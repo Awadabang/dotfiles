@@ -1,4 +1,13 @@
 #!/bin/sh
 # vim: set ft=sh sw=2 et :
 
-echo "yadm bootstrap"
+# 检查 mise 是否已安装，如果未安装则尝试自动安装
+if ! command -v mise &> /dev/null; then
+    echo "mise 未安装，正在尝试自动安装..."
+    curl https://mise.run | sh
+    # 注意：安装脚本通常会将 mise 安装到 ~/.local/bin 或类似目录
+    # 你可能需要在安装后手动将其添加到 PATH，或者重新登录/重启终端
+    echo "mise 安装脚本已运行，请确保 ~/.local/bin 在你的 PATH 中，然后重新启动终端或运行: source ~/.bashrc"
+fi
+
+echo "yadm bootstrap success!"
