@@ -2,7 +2,7 @@
 	email = sheunggz@gmail.com
 	name = Alex Sheung
 [core]
-	editor = nvim
+	editor = vim
 	pager = less -i
 [pull]
 	rebase = false
