@@ -117,3 +117,6 @@ export KUBECONFIG
 
 # mise
 eval "$(~/.local/bin/mise activate bash)"
+
+#
+export EDITOR=vim
