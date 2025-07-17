@@ -13,3 +13,7 @@
 # Ignore README - handled by git hooks -- see .config/yadm/yadm-with-README.md 
 /README.md
 /.config/yadm/README.md
+
+# goup
+/.go
+/.config/go/telemetry

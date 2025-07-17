@@ -98,4 +98,7 @@ if ! command -v mise &> /dev/null; then
     echo "mise 安装脚本已运行，请确保 ~/.local/bin 在你的 PATH 中，然后重新启动终端或运行: source ~/.bashrc"
 fi
 
+echo "Installing go..."
+havecmd goup || curl -sSf https://raw.githubusercontent.com/owenthereal/goup/master/install.sh | sh -s -- '--skip-prompt'
+
 echo "yadm bootstrap success!"
