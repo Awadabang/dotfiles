@@ -120,3 +120,4 @@ eval "$(~/.local/bin/mise activate bash)"
 
 #
 export EDITOR=vim
+export PATH="${HOME}/.local/scripts/generic:${PATH}"

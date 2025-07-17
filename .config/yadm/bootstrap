@@ -1,5 +1,93 @@
-#!/bin/sh
-# vim: set ft=sh sw=2 et :
+#!/usr/bin/env bash
+# yadm bootstrap script
+# Installs all my packages/sets up my environment.
+#
+# Checks for the presence of the $ON_OS variable,
+# which is set in ~/.profile by checking `uname`
+# on linux. Since the ~/.profile is sourced at the
+# beginning of the Xsession and not when opening
+# a shell, it can be assumed that its always set
+# once `yadm clone` has been run and the computer
+# has been restarted.
+
+print_error() {
+	havecmd notify 2>/dev/null && notify -u critical "bootstrap error" "$1"
+	printf '%s%s%s\n' "$(tput setaf 1)" "$1" "$(tput sgr0)" 1>&2
+} && export -f print_error
+
+abort() {
+	print_error "$1"
+	exit 1
+} && export -f abort
+
+declare -rx YADM_DIR="${HOME}/.config/yadm"
+
+# report errors if user doesn't have a command
+export HAVECMD_REPORT=1
+
+# make sure my $PATH is setup properly
+havecmd havecmd || {
+	# optionally let me continue - this may be the first time I'm running this
+	# on android and I need to install zsh/setup defaults
+	printf 'No havecmd; continue anyways? [Ctrl+C to Cancel] '
+	read -r || exit $?
+}
+
+ON_OS="${ON_OS:=}"
+OS_TYPE="$(uname -s)"
+case "${OS_TYPE}" in
+    Linux*)
+        ON_OS="linux"
+        ;;
+    Darwin*)
+        ON_OS="macos"
+        ;;
+    CYGWIN*|MINGW32*|MSYS*|MINGW*)
+        ON_OS="windows"  # Windows 下的 bash 环境（如 Git Bash）
+        ;;
+     *)
+        ON_OS="unknown"
+        ;;
+esac
+declare -rx ON_OS
+
+havecmd git || exit $?
+echo 'Checking git config...'
+# check for global name config
+if [[ -z $(git config --global user.name) ]]; then
+	printf "No global name set. Enter name: "
+	read -r githubusername
+	git config --global user.name "${githubusername}"
+fi
+# check for global email config
+if [[ -z $(git config --global user.email) ]]; then
+	if [[ -n "$GITHUB_EMAIL" ]]; then
+		git config --global user.email "$GITHUB_EMAIL"
+	else
+		printf "No global email set. Enter email connected to your GitHub account: "
+		read -r githubemail
+		git config --global user.email "${githubemail}"
+	fi
+fi
+
+# set editor to use as nvim
+git config --global core.editor nvim
+# specify how to handle divergent branches
+git config --global pull.rebase false
+git config --global core.pager 'less -i'
+# set similar configuration for yadm itself
+yadm gitconfig core.editor nvim
+yadm gitconfig pull.rebase false
+yadm gitconfig core.pager 'less -i'
+case "$ON_OS" in
+linux_arch*)
+	git config --global core.pager 'delta'
+	yadm gitconfig core.pager 'delta'
+	;;
+esac
+
+# set the hooks directory
+yadm gitconfig core.hooksPath "${HOME}/.config/yadm/hooks"
 
 # 检查 mise 是否已安装，如果未安装则尝试自动安装
 if ! command -v mise &> /dev/null; then
