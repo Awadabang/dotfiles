@@ -113,7 +113,7 @@ KUBECONFIG="$HOME/.kube/config"
 export KUBECONFIG
 
 # goup setting
-. ~/.go/env
+[ -f ~/.go/env ] && . ~/.go/env
 
 # mise
 eval "$(~/.local/bin/mise activate bash)"
