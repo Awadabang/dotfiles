@@ -9,3 +9,7 @@
 
 # .viminfo is used to store command line history; search string history; input-line history...
 /.viminfo
+
+# Ignore README - handled by git hooks -- see .config/yadm/yadm-with-README.md 
+/README.md
+/.config/yadm/README.md
