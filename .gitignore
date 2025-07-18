@@ -1,4 +1,7 @@
 # https://github.com/purarue/dotfiles/blob/master/.gitignore
+
+/code
+
 /.ssh
 /.local/share/yadm
 /.local/bin
@@ -17,3 +20,13 @@
 # goup
 /.go
 /.config/go/telemetry
+
+# vscode
+/.vscode-server
+/.vscode-remote-containers
+
+/.dotnet
+
+/.bash_history
+
+/.wget-hsts
