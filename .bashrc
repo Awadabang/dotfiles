@@ -114,6 +114,9 @@ export KUBECONFIG
 
 # goup setting
 [ -f ~/.go/env ] && . ~/.go/env
+export GO111MODULE=on
+export GOPROXY=https://goproxy.cn,direct
+export GOPATH="${HOME}/go"
 
 # mise
 eval "$(~/.local/bin/mise activate bash)"

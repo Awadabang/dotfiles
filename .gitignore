@@ -20,6 +20,8 @@
 # goup
 /.go
 /.config/go/telemetry
+/go
+/.config/gopls
 
 # vscode
 /.vscode-server
