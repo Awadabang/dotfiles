@@ -4,8 +4,16 @@
 
 /.ssh
 /.local/share/yadm
+/.local/share/mise
+/.local/state/mise
 /.local/bin
 /.cache
+
+# gpg
+/.gnupg
+
+# yai-cli
+/.config/yai-cli
 
 # .lesshst is created by less command, to storage history of less command.
 /.lesshst
