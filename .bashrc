@@ -96,6 +96,15 @@ alias l='ls -CF'
 #   sleep 10; alert
 alias alert='notify-send --urgency=low -i "$([ $? = 0 ] && echo terminal || echo error)" "$(history|tail -n1|sed -e '\''s/^\s*[0-9]\+\s*//;s/[;&|]\s*alert$//'\'')"'
 
+## XDG
+export XDG_DOWNLOAD_DIR="${HOME}/Downloads"
+export XDG_DOCUMENTS_DIR="${HOME}/Documents"
+export XDG_PICTURES_DIR="${HOME}/Pictures"
+export XDG_VIDEOS_DIR="${HOME}/Movies"
+export XDG_CONFIG_HOME="${HOME}/.config"
+export XDG_CACHE_HOME="${HOME}/.cache"
+export XDG_DATA_HOME="${HOME}/.local/share"
+
 # enable programmable completion features (you don't need to enable
 # this, if it's already enabled in /etc/bash.bashrc and /etc/profile
 # sources /etc/bash.bashrc).
@@ -105,6 +114,9 @@ if ! shopt -oq posix; then
   elif [ -f /etc/bash_completion ]; then
     . /etc/bash_completion
   fi
+fi
+if [ -f ${XDG_DATA_HOME}/bash-completion/bash_completion ]; then
+  . ${XDG_DATA_HOME}/bash-completion/bash_completion
 fi
 
 # kubernetes setting
@@ -124,3 +136,8 @@ eval "$(~/.local/bin/mise activate bash)"
 #
 export EDITOR=vim
 export PATH="${HOME}/.local/scripts/generic:${PATH}"
+
+# clash: https://github.com/nelvko/clash-for-linux-install
+if [ -f /opt/clash/script/common.sh ]; then
+  source /opt/clash/script/common.sh && source /opt/clash/script/clashctl.sh && watch_proxy
+fi

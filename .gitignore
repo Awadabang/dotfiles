@@ -15,6 +15,13 @@
 # yai-cli
 /.config/yai-cli
 
+# npm
+/.npm
+
+# qwen code
+/.config/configstore/update-notifier-@qwen-code
+/.qwen
+
 # .lesshst is created by less command, to storage history of less command.
 /.lesshst
 
