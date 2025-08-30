@@ -47,3 +47,6 @@
 /.bash_history
 
 /.wget-hsts
+
+# tiup
+/.tiup
