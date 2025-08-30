@@ -50,3 +50,7 @@
 
 # tiup
 /.tiup
+
+# nvim
+/.local/share/nvim
+/.local/state/nvim
