@@ -54,3 +54,4 @@
 # nvim
 /.local/share/nvim
 /.local/state/nvim
+/.vim/.netrwhist
