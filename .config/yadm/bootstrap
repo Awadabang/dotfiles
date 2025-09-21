@@ -10,6 +10,48 @@
 # once `yadm clone` has been run and the computer
 # has been restarted.
 
+need_cmd() {
+  if ! check_cmd "$1"; then
+    err "need '$1' (command not found)"
+  fi
+}
+
+check_cmd() {
+  command -v "$1" > /dev/null 2>&1
+}
+
+# This wraps curl or wget. Try curl first, if not installed,
+# use wget instead.
+downloader() {
+  local _dld
+  if check_cmd curl; then
+    _dld=curl
+  elif check_cmd wget; then
+    _dld=wget
+  else
+    _dld='curl or wget' # to be used in error message of need_cmd
+  fi
+
+  if [ "$1" = --check ]; then
+    need_cmd "$_dld"
+  elif [ "$_dld" = curl ]; then
+    if [ -z "$2" ]; then
+      curl --silent --show-error --fail --location "$1"
+    else
+      curl --silent --show-error --fail --location "$1" --output "$2"
+    fi
+  elif [ "$_dld" = wget ]; then
+    if [ -z "$2" ]; then
+      wget "$1"
+    else
+      wget "$1" -O "$2"
+    fi
+  else
+    err "Unknown downloader"   # should not reach here
+  fi
+}
+downloader --check
+
 print_error() {
 	havecmd notify 2>/dev/null && notify -u critical "bootstrap error" "$1"
 	printf '%s%s%s\n' "$(tput setaf 1)" "$1" "$(tput sgr0)" 1>&2
@@ -98,7 +140,51 @@ if ! command -v mise &> /dev/null; then
     echo "mise 安装脚本已运行，请确保 ~/.local/bin 在你的 PATH 中，然后重新启动终端或运行: source ~/.bashrc"
 fi
 
-echo "Installing go..."
-havecmd goup || curl -sSf https://raw.githubusercontent.com/owenthereal/goup/master/install.sh | sh -s -- '--skip-prompt'
+# 安装goup 和 go
+if !command -v goup &> /dev/null; then
+    echo "Installing goup&go..."
+    downloader "https://github.com/owenthereal/goup/releases/latest/download" "$HOME/.go/bin/goup"
+    chmod u+x "$HOME/.go/bin/goup"
+fi
+
+# Source Bash 脚本
+echo "Sourcing bash configuration files..."
+
+# 定义需要 source 的 bash 文件列表
+bash_files=(
+    "${HOME}/.bashrc"
+    "${HOME}/.bash_profile"
+    "${HOME}/.profile"
+)
+
+# 遍历并 source 每个存在的文件
+for bash_file in "${bash_files[@]}"; do
+    if [[ -f "$bash_file" ]]; then
+        echo "Sourcing $bash_file..."
+        # 使用 source 或者 . 命令
+        # 注意：在脚本中 source 这些文件会影响当前脚本的环境，但不会影响父 shell
+        source "$bash_file" || {
+            print_error "Failed to source $bash_file"
+            continue
+        }
+    else
+        echo "Note: $bash_file does not exist, skipping..."
+    fi
+done
+
+# 如果是交互式 shell，还可以重新加载 completion
+if [[ $- == *i* ]]; then
+    echo "Reloading bash completion..."
+    havecmd bash && {
+        # 重新加载 completion 系统（如果存在）
+        if [[ -f /usr/share/bash-completion/bash_completion ]]; then
+            source /usr/share/bash-completion/bash_completion
+        elif [[ -f /etc/bash_completion ]]; then
+            source /etc/bash_completion
+        fi
+    }
+fi
+
+echo "Bash configuration reloaded!"
 
 echo "yadm bootstrap success!"
